@@ -4,18 +4,16 @@ import { CartContext } from "../contexts";
 import Cart from "../Cart";
 import Pizza from "../Pizza";
 
-// makes currency USD
+// feel free to change en-US / USD to your locale
 const intl = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-// tanstack route path
 export const Route = createLazyFileRoute("/order")({
   component: Order,
 });
 
-// order function for customer pizza selection
 function Order() {
   const [pizzaType, setPizzaType] = useState("pepperoni");
   const [pizzaSize, setPizzaSize] = useState("M");
@@ -59,19 +57,15 @@ function Order() {
     setLoading(false);
   }
 
+  function addToCart() {
+    setCart([...cart, { pizza: selectedPizza, size: pizzaSize, price }]);
+  }
+
   return (
     <div className="order-page">
       <div className="order">
         <h2>Create Order</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setCart([
-              ...cart,
-              { pizza: selectedPizza, size: pizzaSize, price },
-            ]);
-          }}
-        >
+        <form action={addToCart}>
           <div>
             <div>
               <label htmlFor="pizza-type">Pizza Type</label>
